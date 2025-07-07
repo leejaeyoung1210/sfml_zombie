@@ -66,7 +66,7 @@ void Zombie::Reset()
 
 void Zombie::Update(float dt)
 {
-	direction = Utils::GetNormal(player->GetPosition() - GetPosition());
+	direction = Utils::GetNormal(player->GetPosition() - GetPosition()); //좀비에서 플레이어에게로 향하는 방향
 	SetRotation(Utils::Angle(direction));
 	SetPosition(GetPosition() + direction * speed * dt);
 }

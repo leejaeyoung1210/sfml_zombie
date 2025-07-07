@@ -40,9 +40,9 @@ void Player::SetOrigin(Origins preset)
 
 
 
-void Player::Init()
+void Player::Init() //초기값 
 {
-	sortingLayer = SortingLayers::Foreground;
+	sortingLayer = SortingLayers::Foreground; // 배경할당.
 	sortingOrder = 0;
 	SetOrigin(Origins::MC);
 
@@ -56,7 +56,7 @@ void Player::Reset()
 {
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game)
 	{
-		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
+		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene(); //실행중인 씬을 가져오는 함수임. 
 	}
 	else
 	{
@@ -74,7 +74,7 @@ void Player::Reset()
 
 void Player::Update(float dt)
 {
-	//position
+	//이동위치 잡아주는거같은데 
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 

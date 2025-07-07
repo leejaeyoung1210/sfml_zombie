@@ -119,7 +119,7 @@ float Utils::SqrMagnitude(const sf::Vector2f& vec)
     return vec.x * vec.x + vec.y * vec.y;
 }
 
-sf::Vector2f Utils::GetNormal(const sf::Vector2f& vec)
+sf::Vector2f Utils::GetNormal(const sf::Vector2f& vec) //대각선도 직선도 동일한 값으로 만드는거? 
 {
     float mag = Utils::Magnitude(vec);
     if (mag < std::numeric_limits<float>::epsilon())

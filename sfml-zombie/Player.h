@@ -14,8 +14,8 @@ protected:
 	sf::Vector2f look;//보는 방향
 
 	float speed = 500.f;
+	SceneGame* sceneGame = nullptr; //sceneGame에 진행중인 씬을 할당하기전 초기화 
 
-	SceneGame* sceneGame = nullptr;
 
 public:
 	Player(const std::string& name);
