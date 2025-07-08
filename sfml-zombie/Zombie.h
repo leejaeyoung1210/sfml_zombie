@@ -29,6 +29,7 @@ protected:
 	float attackIntervale = 0.f;
 
 	int hp;
+	float attackTimer = 0.f;
 
 	Player* player = nullptr;
 	HitBox hitBox;
@@ -48,6 +49,8 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void SetType(Types type);
+
 	virtual sf::FloatRect GetLocalBounds()const override
 	{
 		return body.getLocalBounds();
@@ -58,8 +61,17 @@ public:
 		return body.getGlobalBounds();
 	}
 
+	const HitBox& GetHitBox() const
+	{
+		return hitBox;
+	}
 
-	void SetType(Types type);
+
+	void OnDamge(int damge);
+
+
+
+	
 
 };
 

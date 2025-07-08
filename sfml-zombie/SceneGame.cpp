@@ -71,14 +71,33 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	cursor.setPosition(ScreenToUi(InputMgr::GetMousePosition()));
-	
 
 	Scene::Update(dt);
-	worldView.setCenter(player->GetPosition());
-
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+	
 	{
-		SpawnZombies(10);
+		auto it = zombieList.begin();
+		while (it != zombieList.end())
+		{
+			if (!(*it)->GetActive())//이런놈들만빼서 풀에옮기자
+			{
+				zombiePool.push_back(*it);
+				it = zombieList.erase(it); //다음번 순회할놈을 리턴해주는 함수임
+			}
+			else
+			{
+				++it;
+			}
+		}
+		worldView.setCenter(player->GetPosition());
+
+		if (InputMgr::GetKeyDown(sf::Keyboard::Space))
+		{
+			SpawnZombies(10);
+		}
+		if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Game);
+		}
 	}
 
 }

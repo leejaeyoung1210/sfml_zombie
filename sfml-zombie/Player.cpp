@@ -80,6 +80,11 @@ void Player::Reset()
 
 	direction = { 0.f,0.f };
 	look = { 1.0f,0.f };
+
+	shootTimer = 0.f;
+	hp = maxHp;
+
+
 }
 
 void Player::Update(float dt)
@@ -117,8 +122,10 @@ void Player::Update(float dt)
 
 	hitBox.UpdateTransform(body,GetLocalBounds());
 
-	if (InputMgr::GetMouseButton(sf::Mouse::Left))
+	shootTimer += dt;
+	if (InputMgr::GetMouseButton(sf::Mouse::Left)&& shootTimer>shootInterval)
 	{
+		shootTimer = 0.f;
 		Shoot();
 	}
 
@@ -150,4 +157,17 @@ void Player::Shoot()
 
 	bulletList.push_back(bullet);
 	sceneGame->AddGameObject(bullet);
+}
+
+
+void Player::OnDamge(int damage)
+{
+
+	if (!IsAlive())
+		return;
+	hp = Utils::Clamp(hp - damage, 0, maxHp);
+		if (hp == 0)
+		{
+			SCENE_MGR.ChangeScene(SceneIds::Game);
+		}
 }

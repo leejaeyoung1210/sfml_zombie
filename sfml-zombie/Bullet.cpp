@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Bullet.h"
 #include "SceneGame.h"
-
+#include "Zombie.h"
 
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
@@ -72,6 +72,19 @@ void Bullet::Update(float dt)
 {
 	SetPosition(position + direction * speed * dt);
 	hitBox.UpdateTransform(body, GetLocalBounds());
+
+	const std::list<Zombie*>& list = sceneGame->GetZombie();
+	// auto로 해도뎀
+	for (auto zombie : list)
+	{
+		if (Utils::CheckCollision(hitBox.rect,zombie->GetHitBox().rect))
+		{
+			SetActive(false);
+			zombie->OnDamge(damage);
+			break;
+		}
+	}
+
 }
 
 void Bullet::Draw(sf::RenderWindow& window)

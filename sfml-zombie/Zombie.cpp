@@ -57,11 +57,14 @@ void Zombie::Reset()
 {
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
 
-	body.setTexture(TEXTURE_MGR.Get(texId),true);
+	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f,0.f });
 	SetRotation(0.f);
 	SetScale({ 1.f, 1.f });
+
+	hp = maxHp;
+	attackTimer = 0.f;
 
 }
 
@@ -72,8 +75,20 @@ void Zombie::Update(float dt)
 	SetPosition(GetPosition() + direction * speed * dt);
 
 	hitBox.UpdateTransform(body, GetLocalBounds());
+
+	attackTimer += dt;
+	if (attackTimer > attackIntervale)
+	{
+		
+		if (Utils::CheckCollision(hitBox.rect, player->GetHitBox().rect))
+		{
+			player->OnDamge(damage);
+			attackTimer = 0.f;
+		}
+	}
+
 }
-  void Zombie::Draw(sf::RenderWindow& window)
+void Zombie::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
 	hitBox.Draw(window);
@@ -88,22 +103,41 @@ void Zombie::SetType(Types type)
 		texId = "graphics/bloater.png";
 		maxHp = 100;
 		speed = 50;
-		damage = 100.f;
+		damage = 30;
 		attackIntervale = 1.f;
 		break;
 	case Types::Chaser:
 		texId = "graphics/chaser.png";
 		maxHp = 200;
 		speed = 30;
-		damage = 150.f;
+		damage = 70;
 		attackIntervale = 1.f;
 		break;
 	case Types::Crawler:
 		texId = "graphics/crawler.png";
 		maxHp = 50;
 		speed = 80;
-		damage = 700.f;
+		damage = 20;
 		attackIntervale = 1.f;
 		break;
 	}
 }
+
+void Zombie::OnDamge(int damge)
+{
+	hp = Utils::Clamp(hp - damage, 0, maxHp);
+	if (hp == 0)
+	{
+		SetActive(false);
+	}
+
+
+
+}
+
+
+
+
+
+
+

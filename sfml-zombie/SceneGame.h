@@ -5,8 +5,7 @@
 class Player;
 class Zombie;
 
-class SceneGame :
-    public Scene
+class SceneGame :    public Scene
 {
 protected:
     Player* player = nullptr;
@@ -27,5 +26,9 @@ public:
 
     void SpawnZombies(int count);
 
+    const std::list<Zombie*>& GetZombie() const
+    {
+        return zombieList;
+    }
 };
 

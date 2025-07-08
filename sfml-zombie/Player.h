@@ -22,7 +22,17 @@ protected:
 	std::list<Bullet*> bulletList;
 	std::list<Bullet*> bulletPool;
 
+	float shootInterval = 0.1f;
+	float shootTimer = 0.1f;
+
+	int hp = 0;
+	int maxHp = 100;
+
+	
+
 public:
+	bool IsAlive() const{ return hp > 0; }
+
 	Player(const std::string& name);
 	~Player() = default;
 
@@ -51,7 +61,16 @@ public:
 		return body.getGlobalBounds();
 	}
 
+	const HitBox& GetHitBox() const
+	{
+		return hitBox;
+	}
+
+
+
 	void Shoot();
+
+	void OnDamge(int damge);
 	
 };
 
