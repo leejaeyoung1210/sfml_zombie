@@ -1,5 +1,8 @@
 #pragma once
 
+#define DEF_DEV
+
+
 enum class SortingLayers
 {
 	Background,

@@ -21,7 +21,7 @@ void Scene::Init()
 
 void Scene::Release()
 {
-	
+	ApplyPendingChanges();
 	
 	for (auto obj : gameObjects)
 	{
@@ -50,7 +50,7 @@ void Scene::Enter()
 
 void Scene::Exit()
 {
-
+	ApplyPendingChanges();
 	
 	TEXTURE_MGR.Unload(texIds);
 	FONT_MGR.Unload(fontIds);
@@ -72,8 +72,8 @@ void Scene::Update(float dt)
 
 void Scene::Draw(sf::RenderWindow& window)
 {
-	std::list<GameObject*> sortedObjects(gameObjects);
-	sortedObjects.sort(DrawOrderComparer());
+	std::list<GameObject*> sortedObjects(gameObjects);//겜오브젝트값을 받는다
+	sortedObjects.sort(DrawOrderComparer());//sortedObjects의 값을 하나씩 컴페어에 넘겨 구조체를 진행후 나열한다.
 
 	window.setView(worldView);
 	bool isUiView = false;

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "SceneGame.h"
-
+#include "HitBox.h"
+#include "Bullet.h"
 Player::Player(const std::string& name)
 	:GameObject(name)
 {
@@ -63,6 +64,15 @@ void Player::Reset()
 		sceneGame = nullptr;
 	}
 
+	for (Bullet* bullet : bulletList)
+	{
+		bullet->SetActive(false);
+		bulletPool.push_back(bullet);
+	}
+	bulletList.clear();
+
+
+
 	body.setTexture(TEXTURE_MGR.Get(texId), true);
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f,0.f });
@@ -74,6 +84,20 @@ void Player::Reset()
 
 void Player::Update(float dt)
 {
+	auto it = bulletList.begin();
+	while (it != bulletList.end())
+	{
+		if (!(*it)->GetActive())//이런놈들만빼서 풀에옮기자
+		{
+			bulletPool.push_back(*it);		
+			it = bulletList.erase(it); //다음번 순회할놈을 리턴해주는 함수임
+		}
+		else
+		{
+			++it;
+		}		
+	}
+
 	//이동위치 잡아주는거같은데 
 	direction.x = InputMgr::GetAxis(Axis::Horizontal);
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
@@ -88,16 +112,42 @@ void Player::Update(float dt)
 	//후에 마우스를 월드좌표계를 쓸거임
 	sf::Vector2i mousePos = InputMgr::GetMousePosition();
 	sf::Vector2f mouseWorldPos = sceneGame->ScreenToWorld(mousePos);
-
-
-
 	look = Utils::GetNormal(mouseWorldPos - GetPosition());
 	SetRotation(Utils::Angle(look));
 
+	hitBox.UpdateTransform(body,GetLocalBounds());
+
+	if (InputMgr::GetMouseButton(sf::Mouse::Left))
+	{
+		Shoot();
+	}
 
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
+}
+
+void Player::Shoot()
+{
+	Bullet* bullet = nullptr;
+	if (bulletPool.empty())
+	{
+		bullet = new Bullet();
+		bullet->Init();
+	}
+	else
+	{
+		bullet = bulletPool.front();
+		bulletPool.pop_front();
+		bullet->SetActive(true);
+	}
+
+	bullet->Reset();
+	bullet->Fire(position+look*10.f, look, 1000.f, 10);
+
+	bulletList.push_back(bullet);
+	sceneGame->AddGameObject(bullet);
 }

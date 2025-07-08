@@ -1,39 +1,29 @@
 #pragma once
 #include "GameObject.h"
 #include "HitBox.h"
+
 class SceneGame;
-class Bullet;
-
-class Player : public GameObject
+class Bullet : public GameObject
 {
-
 protected:
 	sf::Sprite body;
-	std::string texId = "graphics/player.png";
+	std::string texId = "graphics/bullet2.png";
 
-	sf::Vector2f direction;//이동
-	sf::Vector2f look;//보는 방향
-
-	float speed = 500.f;
-	SceneGame* sceneGame = nullptr; //sceneGame에 진행중인 씬을 할당하기전 초기화 
+	sf::Vector2f direction;
+	float speed = 0.f;
+	int damage = 0;
+	SceneGame* sceneGame = nullptr;
 
 	HitBox hitBox;
-
-	std::list<Bullet*> bulletList;
-	std::list<Bullet*> bulletPool;
-
 public:
-	Player(const std::string& name);
-	~Player() = default;
-
+	Bullet(const std::string& name = "");
+	virtual ~Bullet() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
-	void SetScale(const sf::Vector2f& s)override;
-	void SetOrigin(const sf::Vector2f& o)override;
-	void SetOrigin(Origins preset)override;
-
-
+	void SetScale(const sf::Vector2f& s) override;
+	void SetOrigin(const sf::Vector2f& o) override;
+	void SetOrigin(Origins preset) override;
 
 	void Init() override;
 	void Release() override;
@@ -51,7 +41,6 @@ public:
 		return body.getGlobalBounds();
 	}
 
-	void Shoot();
-	
+	void Fire(const sf::Vector2f& pos,const sf::Vector2f& dir, float s,int d);
 };
 

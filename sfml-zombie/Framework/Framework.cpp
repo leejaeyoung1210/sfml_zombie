@@ -36,6 +36,15 @@ void Framework::Do()
         InputMgr::Update(deltaTime);
 
         // Update
+
+#ifdef DEF_DEV //빼거나 넣거나 빌드하고싶을때 (하나의 프로젝트에서 원빌드로운영하고싶을때)
+        if (InputMgr::GetKeyDown(sf::Keyboard::F10))
+        {
+            Variables::isDrawHitBox = !Variables::isDrawHitBox;
+        }
+#endif 
+
+
         SCENE_MGR.Update(deltaTime);
 
         // Draw

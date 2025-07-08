@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-
+#include "HitBox.h"
 class Player;
 
 class Zombie :    public GameObject
@@ -31,6 +31,7 @@ protected:
 	int hp;
 
 	Player* player = nullptr;
+	HitBox hitBox;
 public:
 	Zombie(const std::string& name = "");
 	virtual ~Zombie() = default;
@@ -46,6 +47,16 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	virtual sf::FloatRect GetLocalBounds()const override
+	{
+		return body.getLocalBounds();
+	}
+
+	virtual sf::FloatRect GetGlobalBounds()const override
+	{
+		return body.getGlobalBounds();
+	}
 
 
 	void SetType(Types type);

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Zombie.h"
 #include "Player.h"
+#include "HitBox.h"
 
 Zombie::Zombie(const std::string& name)
 	: GameObject(name)
@@ -56,7 +57,7 @@ void Zombie::Reset()
 {
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
 
-	body.setTexture(TEXTURE_MGR.Get(texId));
+	body.setTexture(TEXTURE_MGR.Get(texId),true);
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f,0.f });
 	SetRotation(0.f);
@@ -69,10 +70,13 @@ void Zombie::Update(float dt)
 	direction = Utils::GetNormal(player->GetPosition() - GetPosition()); //좀비에서 플레이어에게로 향하는 방향
 	SetRotation(Utils::Angle(direction));
 	SetPosition(GetPosition() + direction * speed * dt);
+
+	hitBox.UpdateTransform(body, GetLocalBounds());
 }
   void Zombie::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
 }
 
 void Zombie::SetType(Types type)

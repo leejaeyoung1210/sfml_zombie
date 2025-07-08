@@ -37,12 +37,22 @@ public:
 	virtual void SetScale(const sf::Vector2f& s) { scale = s; }
 
 	sf::Vector2f GetOrigin() const { return origin; }
-	virtual void SetOrigin(const sf::Vector2f& o) 
-	{ 
+	virtual void SetOrigin(const sf::Vector2f& o)
+	{
 		originPreset = Origins::Custom;
 		origin = o;
 	}
 	virtual void SetOrigin(Origins preset) { originPreset = preset; }
+
+	virtual sf::FloatRect GetLocalBounds()const
+	{
+		return { 0.f,0.f,0.f,0.f };
+	}
+
+	virtual sf::FloatRect GetGlobalBounds()const
+	{
+		return { 0.f,0.f,0.f,0.f };
+	}
 
 	virtual void Init() = 0;
 	virtual void Release() = 0;
