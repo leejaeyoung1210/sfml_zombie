@@ -5,15 +5,15 @@ class Scene
 protected:
 	std::list<GameObject*> gameObjects;
 
-	std::list<GameObject*> objectsToAdd;
-	std::list<GameObject*> objectsToRemove;
+	std::list<GameObject*> objectsToAdd;//
+	std::list<GameObject*> objectsToRemove;//
 
 	std::vector<std::string> texIds;
 	std::vector<std::string> fontIds;
 	std::vector<std::string> soundIds;
 
-	sf::View uiView;
-	sf::View worldView;
+	sf::View uiView;//
+	sf::View worldView;//
 
 	void ApplyPendingChanges();
 
@@ -48,7 +48,7 @@ public:
 
 };
 
-struct DrawOrderComparer
+struct DrawOrderComparer//
 {
 	bool operator()(const GameObject* a, const GameObject* b)
 	{
